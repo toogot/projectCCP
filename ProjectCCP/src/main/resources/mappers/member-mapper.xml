@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper>
-  <cache-ref namespace="memberMapper"/>
+<mapper namespace="memberMapper">
+  
+  
+  <resultMap type="Member" id="MemberResult">
+  	<result column="user_no" property="userNo"/>
+  	<result column="user_id" property="userId"/>
+  	<result column="user_pwd" property="userPwd"/>
+  	<result column="email" property="email"/>
+  	<result column="phone" property="phone"/>
+  	<result column="address" property="address"/>
+  	<result column="user_level" property="userLevel"/>
+  	<result column="enroll_date" property="enrollDate"/>
+  	<result column="balance" property="balance"/>
+  	<result column="blacklist" property="blacklist"/>
+  	<result column="status" property="status"/>
+  </resultMap>
+	
+	
+  <select id="loginMember" resultMap="MemberResult">
+  	select 
+  		   user_no
+  		 , user_id
+  		 , user_pwd
+  		 , email
+  		 , phone
+  		 , address
+  		 , user_level
+  		 , enroll_date
+  		 , balance
+  		 , blacklist
+  		 , status
+  	  from member
+  	 where user_id=#{userId}
+  	   and user_pwd=#{userPwd} 
+  	
+  </select>
+
+
 </mapper>
