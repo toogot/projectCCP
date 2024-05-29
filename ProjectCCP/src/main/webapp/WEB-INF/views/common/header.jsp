@@ -53,12 +53,20 @@
                     <!-- ***** Serach Start ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                      <li class="scroll-to-section"><a href="<%= request.getContextPath() %>" class="active">Home</a></li>
-                      <li class="scroll-to-section"><a href="#services">Services</a></li>
-                      <li class="scroll-to-section"><a href="#courses">Courses</a></li>
-                      <li class="scroll-to-section"><a href="#team">Team</a></li>
-                      <li class="scroll-to-section"><a href="#events">Events</a></li>
-                      <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
+                      <li class="scroll-to-section"><a href="<%= request.getContextPath() %>">메인화면</a></li>
+                      <li class="scroll-to-section"><a href="#services">결제</a></li>
+                      <li class="scroll-to-section"><a href="#courses">매장찾기</a></li>
+                      <li class="scroll-to-section"><a href="#team">입점신청</a></li>
+                      <li class="scroll-to-section"><a href="#events">고객센터</a></li>
+                
+				  	<c:choose>
+					  	<c:when test="${ empty loginUser }">
+					  		 <li class="scroll-to-section"><a href="loginForm.me">로그인</a></li>
+					  	</c:when>
+					  	<c:otherwise>
+					  		<li class="scroll-to-section"><a href="logout.me">로그아웃</a></li>
+					  	</c:otherwise>
+				    </c:choose>
                   </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>
