@@ -46,18 +46,18 @@
                     <!-- ***** Serach Start ***** -->
                     <div class="search-input">
                       <form id="search" action="#">
-                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
+                        <input type="text" placeholder="검색" id='searchText' name="searchKeyword" onkeypress="handle" />
                         <i class="fa fa-search"></i>
                       </form>
                     </div>
                     <!-- ***** Serach Start ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                      <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                      <li class="scroll-to-section"><a href="#services">Services</a></li>
-                      <li class="scroll-to-section"><a href="#courses">Courses</a></li>
-                      <li class="scroll-to-section"><a href="#team">Team</a></li>
-                      <li class="scroll-to-section"><a href="#events">Events</a></li>
+                      <li class="scroll-to-section"><a href="#top" class="active">메인화면</a></li>
+                      <li class="scroll-to-section"><a href="#services">결제</a></li>
+                      <li class="scroll-to-section"><a href="findStore.st">매장찾기</a></li>
+                      <li class="scroll-to-section"><a href="#team">입점신청</a></li>
+                      <li class="scroll-to-section"><a href="#events">고객센터</a></li>
                       <li class="scroll-to-section"><a href="loginPage.me">로그인</a></li>
                   </ul>   
                     <a class='menu-trigger'>
