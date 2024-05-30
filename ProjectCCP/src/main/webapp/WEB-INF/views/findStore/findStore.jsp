@@ -11,20 +11,31 @@
     <!-- Bootstrap core CSS -->
     <link href="<%= request.getContextPath() %>/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/assets/css/fontawesome.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/assets/css/templatemo-scholar.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/assets/css/owl.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/assets/css/animate.css">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     
-    
+    <!-- 카카오 지도 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6efe75df65cddf72652dc9ce2bfc991d&libraries=services"></script>
     <style>
      .map {
-     	background-color:white;
-     	border-radius:10px;
-     	height:800px;
+        background-color: white;
+        border-radius: 10px;
+        height: 800px;
+     }
+     
+     .search-input {
+     	text-align:center;
+     	margin-top:50px;
+     }
+     
+     #placesList {
+     	border-radius: 10px;
+     	background-color: white;
+     	font-size: 20px;
      }
     </style>
 </head>
@@ -55,7 +66,6 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Serach Start ***** -->
                     <div class="search-input">
-                    
                     </div>
                     <!-- ***** Serach Start ***** -->
                     <!-- ***** Menu Start ***** -->
@@ -81,10 +91,12 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-            <div class="map" id="map">
-              <div class="header-text">               
-              </div>
-            </div>
+             <div class="map" id="map"></div>   
+             <div class="search-input">
+              <input type="text" placeholder="세차장 검색" id='keyword' name="searchKeyword" onkeypress="handle"  style="border-radius: 10px; width:300px; height:40px;"/>
+              <i class="fa fa-search"  onclick="searchPlaces()" style="width:40px; height:40px;"></i>
+             <div id="placesList"></div>
+             </div>
         </div>
       </div>
     </div>
@@ -107,22 +119,81 @@
   <script src="<%= request.getContextPath() %>/resources/assets/js/counter.js"></script>
   <script src="<%= request.getContextPath() %>/resources/assets/js/custom.js"></script>
 
-	
-
-  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6efe75df65cddf72652dc9ce2bfc991d"></script>
   <script>
-  	var ccpMap = document.getElementById('map');
-  	var options = {
-  			center: new kakao.maps.LatLng(33.450701, 126.570667),
-  			level:3
-  	};
-  	
-  	var map = new kakao.maps.Map(ccpMap, options);
-  	
-  
-  	
-  </script>	
+      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+          mapOption = { 
+              center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도의 중심좌표
+              level: 3 // 지도의 확대 레벨
+          };
 
+      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
+      // 장소 검색 객체를 생성합니다
+      var ps = new kakao.maps.services.Places(); 
+
+      // 키워드 검색을 요청하는 함수입니다
+      function searchPlaces() {
+          var keyword = document.getElementById('keyword').value;
+
+          if (!keyword.replace(/^\s+|\s+$/g, '')) {
+              alert('키워드를 입력해주세요!');
+              return false;
+          }
+
+          // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+          ps.keywordSearch(keyword, placesSearchCB); 
+      }
+      
+      function handleKeyPress(event) {
+    	    if (event.keyCode === 13) { // 엔터 키 코드는 13입니다
+    	        searchPlaces(); // searchPlaces 함수 호출
+    	    }
+    	}
+
+    	// input 요소에 이벤트 리스너 추가
+    	document.getElementById('keyword').addEventListener('keypress', handleKeyPress);
+
+      // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+      function placesSearchCB(data, status, pagination) {
+          if (status === kakao.maps.services.Status.OK) {
+              // 검색된 장소 위치를 지도에 표시합니다
+              displayPlaces(data);
+          } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+              alert('검색 결과가 존재하지 않습니다.');
+              return;
+          } else if (status === kakao.maps.services.Status.ERROR) {
+              alert('검색 결과 중 오류가 발생했습니다.');
+              return;
+          }
+      }
+
+      // 지도에 검색된 장소 위치를 표시하는 함수입니다
+      function displayPlaces(places) {
+          var listEl = document.getElementById('placesList'), 
+              bounds = new kakao.maps.LatLngBounds(), 
+              listStr = '';
+          
+          // 검색 결과 목록에 추가된 장소 위치 표시
+          for (var i=0; i<places.length; i++) {
+              var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+                  marker = addMarker(placePosition, i); // 마커를 지도에 추가
+              
+              bounds.extend(placePosition); // 검색된 장소 위치를 LatLngBounds 객체에 추가합니다
+              listStr += '<li>'+ '•  ' + places[i].place_name + '</li>';
+          }
+
+          listEl.innerHTML = listStr; // 검색 결과 목록을 HTML로 출력
+          map.setBounds(bounds); // 검색된 장소 위치를 포함하도록 지도 범위를 재설정합니다
+      }
+
+      // 마커를 생성하고 지도 위에 표시하는 함수입니다
+      function addMarker(position, idx) {
+          var marker = new kakao.maps.Marker({
+              position: position,
+              map: map
+          });
+          return marker;
+      }
+  </script> 
 </body>
 </html>
