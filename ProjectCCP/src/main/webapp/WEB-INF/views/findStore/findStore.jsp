@@ -91,7 +91,7 @@
           
             <div class="map" id="map">
               <div class="header-text">
-                dlfgnldfngkdfnlgdfngkdfnngkdfn
+                
               </div>
             </div>
             
