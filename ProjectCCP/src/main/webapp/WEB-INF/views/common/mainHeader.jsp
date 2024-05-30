@@ -47,7 +47,7 @@
                     <!-- ***** Serach Start ***** -->
                     <div class="search-input">
                       <form id="search" action="#">
-                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
+                        <input type="text" placeholder="검색" id='searchText' name="searchKeyword" onkeypress="handle" />
                         <i class="fa fa-search"></i>
                       </form>
                     </div>
