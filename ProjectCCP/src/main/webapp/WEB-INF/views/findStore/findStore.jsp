@@ -120,18 +120,16 @@
   <script src="<%= request.getContextPath() %>/resources/assets/js/custom.js"></script>
 
   <script>
-      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      var mapContainer = document.getElementById('map'),
           mapOption = { 
-              center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도의 중심좌표
-              level: 3 // 지도의 확대 레벨
+              center: new kakao.maps.LatLng(37.5665, 126.9780), 
+              level: 3 
           };
 
-      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-      // 장소 검색 객체를 생성합니다
+      var map = new kakao.maps.Map(mapContainer, mapOption);
+    
       var ps = new kakao.maps.services.Places(); 
-
-      // 키워드 검색을 요청하는 함수입니다
+    
       function searchPlaces() {
           var keyword = document.getElementById('keyword').value;
 
@@ -140,23 +138,20 @@
               return false;
           }
 
-          // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+         
           ps.keywordSearch(keyword, placesSearchCB); 
       }
       
       function handleKeyPress(event) {
-    	    if (event.keyCode === 13) { // 엔터 키 코드는 13입니다
-    	        searchPlaces(); // searchPlaces 함수 호출
+    	    if (event.keyCode === 13) { 
+    	        searchPlaces(); 
     	    }
     	}
-
-    	// input 요소에 이벤트 리스너 추가
+   	
     	document.getElementById('keyword').addEventListener('keypress', handleKeyPress);
-
-      // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+    
       function placesSearchCB(data, status, pagination) {
-          if (status === kakao.maps.services.Status.OK) {
-              // 검색된 장소 위치를 지도에 표시합니다
+          if (status === kakao.maps.services.Status.OK) {            
               displayPlaces(data);
           } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
               alert('검색 결과가 존재하지 않습니다.');
@@ -166,27 +161,25 @@
               return;
           }
       }
-
-      // 지도에 검색된 장소 위치를 표시하는 함수입니다
+    
       function displayPlaces(places) {
           var listEl = document.getElementById('placesList'), 
               bounds = new kakao.maps.LatLngBounds(), 
               listStr = '';
           
-          // 검색 결과 목록에 추가된 장소 위치 표시
+          
           for (var i=0; i<places.length; i++) {
               var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                  marker = addMarker(placePosition, i); // 마커를 지도에 추가
+                  marker = addMarker(placePosition, i);
               
-              bounds.extend(placePosition); // 검색된 장소 위치를 LatLngBounds 객체에 추가합니다
+              bounds.extend(placePosition); 
               listStr += '<li>'+ '•  ' + places[i].place_name + '</li>';
           }
 
-          listEl.innerHTML = listStr; // 검색 결과 목록을 HTML로 출력
-          map.setBounds(bounds); // 검색된 장소 위치를 포함하도록 지도 범위를 재설정합니다
+          listEl.innerHTML = listStr;
+          map.setBounds(bounds); 
       }
-
-      // 마커를 생성하고 지도 위에 표시하는 함수입니다
+    
       function addMarker(position, idx) {
           var marker = new kakao.maps.Marker({
               position: position,
