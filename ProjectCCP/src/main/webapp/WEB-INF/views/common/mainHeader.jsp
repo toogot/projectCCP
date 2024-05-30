@@ -40,7 +40,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="#" class="logo">
+                    <a href="<%= request.getContextPath() %>" class="logo">
                         <h1>CCP</h1>
                     </a>
                     <!-- ***** Logo End ***** -->
@@ -56,9 +56,9 @@
                     <ul class="nav">
                       <li class="scroll-to-section"><a href="<%= request.getContextPath() %>" class="active">메인화면</a></li>
                       <li class="scroll-to-section"><a href="#services">결제</a></li>
-                      <li class="scroll-to-section"><a href="#courses">매장찾기</a></li>
+                      <li class="scroll-to-section"><a href="findStore.st">매장찾기</a></li>
                       <li class="scroll-to-section"><a href="#team">입점신청</a></li>
-                      <li class="scroll-to-section"><a href="#events">고객센터</a></li>
+                      <li class="scroll-to-section"><a href="cscMain.cs">고객센터</a></li>
                 
 				  	<c:choose>
 					  	<c:when test="${ empty loginUser }">

@@ -39,7 +39,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="#" class="logo">
+                    <a href="<%= request.getContextPath() %>" class="logo">
                         <h1>CCP</h1>
                     </a>
                     <!-- ***** Logo End ***** -->
