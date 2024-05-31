@@ -6,19 +6,56 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <style>
-	#form-wrap{
-		width: 500px;
-		margin: auto;
-	}
-	#btn-wrap{
-		width: 200px;
-		margin: auto;
-		margin-top: 50px;
-	}
-	.row select{
-		display: block;
-	}
+.check{
+	color: red;
+}
+
+#form-wrap {
+	width: 700px;
+	margin: auto;
+}
+#form-wrap>h1{
+	margin: 50px 0px;
+}
+
+#btn-wrap {
+	width: 200px;
+	margin: auto;
+	margin-top: 50px;
+}
+
+#front-email {
+	width: 200px;
+}
+
+#back-email{
+	width: 260px;
+}
+#userId{
+	display:block;
+	float:left;
+	width: 500px;
+}
+.mb-3 button{
+	display:block;
+	float:left;
+	width: 100px;
+	margin-left: 25px;
+}
+#idCheck{
+	display: block;
+	margin-top: 5px
+}
+#address{
+	width: 500px;
+}
+.mb-3 input{
+	width: 500px;
+}
+
 </style>
 
 </head>
@@ -26,34 +63,45 @@
 	<jsp:include page="../common/header.jsp" />
 	<div id="form-wrap" class="container mt-3">
 		<h1>회원가입</h1>
-		<form action="/action_page.php">
+		<form class="form-inline"  action="/action_page.php">
+		
 		  <div class="mb-3 mt-3">
 		    <label for="userId" class="form-label">아이디</label>
-		    <input type="text" class="form-control" id="userId" placeholder="ID" name="userId">
+		    <br>
+		    <input type="text" class="form-control" id="userId" placeholder="영문자로 시작,영문자,숫자 조합 8글자 이상" name="userId" required onkeyup="idCheck();">
+		    <button type="button" class="btn btn-warning" onclick="insertIdCheck();">중복확인</button>
+		    <br><br>
+		    <div id="idCheck" class="check"></div>
 		  </div>
 		  <div class="mb-3">
 		    <label for="userPwd" class="form-label">비밀번호</label>
-		    <input type="password" class="form-control" id="userPwd" placeholder="Password" name="userPwd">
+		    <input type="password" class="form-control" id="userPwd" placeholder="영문자,숫자,특수문자 조합 8글자 이상" name="userPwd" required onkeyup="pwdCheck();">
+		    <div id="pwdCheck" class="check"></div>
 		  </div>
+		  
 		  <div class="mb-3">
 		    <label for="checkPwd" class="form-label">비밀번호확인</label>
-		    <input type="password" class="form-control" id="checkPwd" placeholder="Password">
+		    <input type="password" class="form-control" id="checkPwd" placeholder="위의 비밀번호와 동일하게 입력" required onkeyup="reCheckPwd();">
+		    <div id="checkPwdBox" class="check"></div>
 		  </div>
+		  
 		  <div class="mb-3">
 		    <label for="userName" class="form-label">이름</label>
-		    <input type="text" class="form-control" id="userName" placeholder="Password" name="userName">
+		    <input type="text" class="form-control" id="userName" placeholder="한글두글자이상" name="userName" required onkeyup="nameCheck();">
+		    <div id="nameCheck" class="check"></div>
 		  </div>
+		  
 		  <div class="row">
-		  	<label for="pwd" class="form-label">이메일</label>
+		  	<label for="front-email" class="form-label">이메일</label>
 		    <div class="col">
-		      <input type="text" class="form-control" name="front-email">
+		      <input type="text" class="form-control" id="front-email">
 		    </div>
 		    @
 		    <div class="col">
-		      <input type="text" class="form-control" name="back-email">
+		      <input type="text" class="form-control" id="back-email" onkeyup="frontEmailSelect(this)">
 		    </div>
 		    <div class="col">
-		     <select id="emailSelect" class="form-select mt-3">
+		     <select id="emailSelect" class="form-select" onchange="backEmailSelcet(this);">
 		     	<option>직접입력</option>
 		     	<option>naver.com</option>
 		     	<option>daum.com</option>
@@ -62,12 +110,135 @@
 		     </select>
 		    </div>
 		  </div>
+		  
+		  <input type="hidden" id="email" name="email" value="">
+		  
+		  <div class="mb-3" style="margin-top: 10px">
+		    <label for="phone" class="form-label">전화번호</label>
+		    <input type="text" class="form-control" id="phone" placeholder="phone" name="phone" required>
+		  </div>
+		  
+		  <div class="row">
+		  	<label for="pwd" class="form-label">주소</label>
+		    <div class="col">
+		      <input type="text" class="form-control" id="address" readonly required>
+		  	</div>
+		  	<div class="col">
+		      <button type="button" class="btn btn-primary" onclick="addressCheck();">주소확인</button>
+		  	</div>
+		  </div>
+		  
 		  <div id="btn-wrap">
 		  	<button type="submit" class="btn btn-primary">회원가입</button>
-		  	<button type="reset" class="btn btn-danger">취소</button>
+		  	<button type="reset" class="btn btn-danger" onclick="location.href='<%=request.getContextPath()%>'">취소</button>
 		  </div>
 		</form>
 	</div>
 	<jsp:include page="../common/footer.jsp" />
 </body>
+
+
+<script>
+	let req = "";
+	let frontEmail = "";
+	let backEmail = "";
+	
+	function insertIdCheck(){
+		req=/^[a-z][a-z\d]{8,15}$/i;
+		if($("#userId").val == ""){
+			alert("아이디를 입력해주세요")
+		}
+		
+		if(!req.test($("#userId").val())){
+			alert("옳바른 아이디를 입력해주세요")
+		}else{
+			$.ajax({
+				url:"idCheck.me",
+				data:{
+					userId:$("#userId").val()
+				},
+				success:function(data){
+					console.log("sdfs")
+				}
+			})
+		}
+	}
+	
+	
+	function idCheck(){
+		req=/^[a-z][a-z\d]{8,15}$/i;
+		if(!req.test($("#userId").val())){
+			$("#idCheck").html("사용 불가능 아이디입니다.").css("color","red")
+		}else{
+			$("#idCheck").html("사용 가능 아이디입니다.").css("color","green");
+		}
+	}
+	
+	function pwdCheck(){
+		req=/^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/;
+		if(!req.test($("#userPwd").val())){
+			$("#pwdCheck").html("사용 불가능한 비밀번호입니다.").css("color","red")
+		}else{
+			$("#pwdCheck").html("사용 가능한 비밀번호입니다.").css("color","green")
+		}
+		
+		
+		if($("#checkPwd").val() != $("#userPwd").val()){
+			$("#checkPwdBox").html("비밀번호가 일치하지 않습니다.")
+		}else{
+			$("#checkPwdBox").html("")
+		}
+		
+	}
+	
+	function reCheckPwd(){
+
+		if($("#checkPwd").val() != $("#userPwd").val()){
+			$("#checkPwdBox").html("비밀번호가 일치하지 않습니다.")
+		}else{
+			$("#checkPwdBox").html("")
+		}
+	}
+	
+	function nameCheck(){
+		req=/^[가-힣]{2,}$/;
+		if(!req.test($("#userName").val())){
+			$("#nameCheck").html("옳바른 이름을 입력해주세요.")
+		}else{
+			$("#nameCheck").html("")
+		}
+
+	}
+	
+	
+	function frontEmailSelect(e){
+		frontEmail = $("#front-email").val();
+		backEmail = $("#back-email").val();
+		if(frontEmail != ""){
+			$("#email").val(frontEmail+"@"+backEmail);
+		}
+	}
+	function backEmailSelcet(e){
+		if(e.value=="직접입력"){
+			$("#back-email").attr("disabled",false).val("")
+		}else{
+			$("#back-email").attr("disabled",true).val(e.value)
+			frontEmail = $("#front-email").val();
+			backEmail = $("#back-email").val();
+			$("#email").val(frontEmail+"@"+backEmail);
+		}
+	}
+	
+	function addressCheck(){
+		new daum.Postcode({
+	        oncomplete: function(data) {
+	            $("#address").val(data.roadAddress)
+	        }
+	    }).open();
+	}
+
+</script>
+
+
+
 </html>

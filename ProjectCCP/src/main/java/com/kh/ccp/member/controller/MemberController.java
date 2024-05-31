@@ -48,4 +48,12 @@ public class MemberController {
 	public String memberInsertForm() {
 		return "member/insertMember";
 	}
+	
+	@RequestMapping("insertIdCheck.me")
+	public String idCheck(String userId){
+		
+		
+		
+	}
+	
 }
