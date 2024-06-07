@@ -21,7 +21,6 @@ public class Member {
 	private String email;
 	private String phone;
 	private String address;
-	private String userLevel;
 	private String enrollDate;
 	private int balance;
 	private String blacklist;

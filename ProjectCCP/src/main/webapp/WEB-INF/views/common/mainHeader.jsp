@@ -14,9 +14,21 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/assets/css/owl.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+   <!-- Default theme -->
+   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+   <!-- Semantic UI theme -->
+   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+   <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
+<c:if test="${ not empty alertMsg }">
+      <script>
+        alertify.alert("${alertMsg}");
+      </script>
+      <c:remove var="alertMsg" scope="session" />
+    </c:if>
 </head>
 <body>
 
