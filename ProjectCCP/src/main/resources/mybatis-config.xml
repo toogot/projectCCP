@@ -9,10 +9,12 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.ccp.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.ccp.csc.model.vo.Csc" alias="Csc"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/csc-mapper.xml"/>
 	</mappers>
 
 </configuration>

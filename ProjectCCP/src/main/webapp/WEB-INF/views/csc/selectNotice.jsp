@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>고객센터</title>
+    <title>게시판</title>
 
     <!-- Bootstrap core CSS -->
     <link href="<%= request.getContextPath() %>/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -96,50 +97,59 @@
     </div>
 
  
-  <section class="section courses" id="courses" >
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <div class="section-heading">           
-            <h2>고객센터</h2>
-          </div>
-        </div>
-      </div>
-      <div class="row event_box" id="event_box">
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 design" id="c1">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="/resources/assets/images/course-01.jpg" alt=""></a>
-              <span class="category">Webdesign</span>
-              <span class="price"><h6><em>$</em>160</h6></span>
-            </div>
-            <div class="down-content"><a href="notice.no">
-              <span class="author">공지사항</span>
-              <h4>공지사항을 확인 해보세요!</h4>
-              </a>
-            </div>
-          </div>
-        </div> 
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 wordpress design" id="c2">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="/resources/assets/images/course-06.jpg" alt=""></a>
-              <span class="category">Webdesign</span>
-              <span class="price"><h6><em>$</em>240</h6></span>
-            </div>
-            <div class="down-content">
-              <span class="author">문의하기</span>
-              <h4>고객센터에 문의 해보세요!</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
- 
+       
+         
+	<div id="selectNotice">
+	    <h2 align="center" style="margin-top:50px;">공지사항</h2>
+		<br><br>
+		<table id="selectTable" style="border:1px solid gray;">
+		  <thead style="border:1px solid gray;">
+		  	
+				<tr>				  
+					<th width="50">게시물 번호</th>
+	                <th width="100">제목</th>
+	                <th width="50">작성자</th>
+	                <th width="50">작성일</th>
+	                <th width="50">조회수</th>               					
+				</tr>
+			</thead>
+			<tbody>
+			<c:forEach var="nl" items="${ selectNotice }">
+			  <tr>   			  	
+			    <td>${ nl.notiCode }</td>
+			    <td>${ nl.notiTitle }</td>
+			    <td>관리자</td>
+			    <td>${ nl.notiCount }</td>
+			    <td>${ nl.notiDate }</td>			  	
+			  </tr>
+			  </c:forEach>
+			</tbody>
+		</table>	
+	</div> 
   
-
+	<div id="pagingArea">
+                <ul class="pagination">
+                		<c:choose>
+	                		<c:when test="${ pi.currentPage eq 1 }">
+		                    	<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage - 1 }">Previous</a></li>
+	                    	</c:otherwise>
+                    	</c:choose>
+                    	<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    		<li class="page-item"><a class="page-link" href="notice.no?cpage=${ p }">${ p }</a></li>
+                    	</c:forEach>
+                    	<c:choose>
+	                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+		                   		 <li class="page-item disabled"><a class="page-link" href="">Next</a></li>
+	               			</c:when>
+	               			<c:otherwise>
+	               				<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage + 1 }">Next</a></li>
+	               			</c:otherwise>
+               			</c:choose>
+                </ul>
+            </div>
 
 
   <footer>
