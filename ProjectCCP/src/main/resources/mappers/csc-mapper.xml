@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="cscMapper">
+
+  <resultMap type="Csc" id="CscResultSet">
+  	<result column="NOTI_CODE" property="notiCode"/>
+  	<result column="NOTI_TITLE" property="notiTitle"/>
+  	<result column="NOTI_CONTENT" property="notiContent"/>
+  	<result column="NOTI_DATE" property="notiDate"/>
+  	<result column="NOTI_COUNT" property="notiCount"/>  
+  	<result column="NO_STATUS" property="noStatus"/>	
+  </resultMap>
+  
+  
+  <select id="selectListCount" resultType="_int">
+ 		select
+ 			   count(*)
+ 		  from notice
+ 		 where no_status='Y' 	  
+ 	</select>
+  
+  <select id="selectNotice" resultMap="CscResultSet">
+  	select
+  		  NOTI_CODE
+  		, NOTI_TITLE  
+  		, NOTI_CONTENT
+  		, NOTI_DATE
+  		, NOTI_COUNT
+  		, NO_STATUS
+      from notice
+      where no_status= 'Y'
+      order by NOTI_DATE desc
+  </select>
+
+</mapper>
