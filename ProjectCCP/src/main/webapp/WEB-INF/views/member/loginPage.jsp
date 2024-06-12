@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style>
+	#social-wrap{
+		width: 200px;
+		margin-top: 30px;
+	}
+</style>
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous" />
 </head>
 <body>
 
@@ -52,11 +61,43 @@
                 </div>
               </div>
             </form>
+            <div id="social-wrap">
+	            <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=0746476497ec8c987bca594c88f0b09c&redirect_uri=http://localhost:8053/ccp/kakaoCallback.me">
+				  <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="222"
+				    alt="카카오 로그인 버튼" />
+				</a>
+			</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 	<jsp:include page="../common/footer.jsp" />
+	
+	<script>
+	Kakao.init('e56deda5fad6b83a79e9155ef4a1751c');
+	console.log(Kakao.isInitialized())
+	
+		
+	$(function(){
+		if(${token} != null){
+			console.log(${token})
+			
+			$.ajax({
+				url:"https://kapi.kakao.com/v2/user/me",
+				beforeSend : function(xhr){
+			        xhr.setRequestHeader("Authorization", "Bearer "+ ${token});
+			        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;charset=utf-8");
+			    },
+			    success:function(data){
+			    	console.log(data);
+			    }
+			})
+			
+		}
+	})
+
+	</script>
+	
 </body>
 </html>

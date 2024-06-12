@@ -37,4 +37,22 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.insertMember(sqlSession,m);
 	}
 
+	@Override
+	public int checkKakao(String memId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int isertKakaoMember(Member m) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Member loginKakaoMember(String memId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
